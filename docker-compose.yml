@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  mongodb:
+    image: mongo:4.1
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    networks:
+      - project_mongo
+
+  app_project:
+    container_name: GolangAppMongo
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: projectgolangmongo:1.0
+    ports:
+      - 9000:9000
+    environment:
+      - DB_HOST=mongodb
+      - DB_PORT=27017
+      - DB_NAME=website_crud
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    networks:
+      - project_mongo
+      
+
+networks:
+  project_mongo:
+
+
